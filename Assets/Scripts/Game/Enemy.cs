@@ -67,8 +67,11 @@ public class Enemy : MonoBehaviour
             float secondsBeforeShoot = Random.Range(3f, 7f);
             yield return new WaitForSeconds(secondsBeforeShoot);
 
-            Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y - 1.5f, 0), Quaternion.Euler(0, 0, 180));
-            _audioManager.PlayLaserSound();
+            if (!_isDestroyed)
+            {
+                Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y - 1.5f, 0), Quaternion.Euler(0, 0, 180));
+                _audioManager.PlayLaserSound();
+            }
         }
     }
 
@@ -96,12 +99,13 @@ public class Enemy : MonoBehaviour
 
     private void DestroyEnemy()
     {
+        _isDestroyed = true;
+
         _animator.SetTrigger("OnEnemyDestroy");
 
         if (!_isDestroyed)
             _audioManager.PlayExplosionSound();
 
-        _isDestroyed = true;
         _speed = 0;
     }
 }

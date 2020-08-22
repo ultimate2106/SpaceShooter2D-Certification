@@ -8,7 +8,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 5;
     [SerializeField]
-    private float _raisedSpeed = 10;
+    private float _speedMultiplier = 2f;
+
+
     [SerializeField]
     private float _fireRate = 0.15f;
     [SerializeField]
@@ -81,6 +83,14 @@ public class Player : MonoBehaviour
         {
             Shoot();
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _speed *= _speedMultiplier;
+        } else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _speed /= _speedMultiplier;
+        }
     }
 
     private void CalculateMovement()
@@ -91,7 +101,7 @@ public class Player : MonoBehaviour
         var direction = new Vector3(horizontalInput, verticalInput, 0);
         if (_isSpeedUpActive)
         {
-            transform.Translate(direction * _raisedSpeed * Time.deltaTime);
+            transform.Translate(direction * (_speed * _speedMultiplier) * Time.deltaTime);
         } else
         {
             transform.Translate(direction * _speed * Time.deltaTime);
