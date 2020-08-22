@@ -22,10 +22,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _score = 0;
 
-    [SerializeField]
     private GameObject _damageLeft;
-    [SerializeField]
     private GameObject _damageRight;
+
+    private GameObject _shield;
+    private Shield _shieldControl;
     #endregion
 
     #region Manager References
@@ -46,9 +47,6 @@ public class Player : MonoBehaviour
     private bool _isTripleShotActive = false;
     private bool _isSpeedUpActive = false;
     private bool _isShieldActive = false;
-
-    [SerializeField]
-    private GameObject _shield;
     #endregion
     #endregion
 
@@ -56,7 +54,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
-        
+
+        #region Get Manager References
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         if (_spawnManager == null)
             Debug.LogError("SpawnManager is null");
@@ -72,6 +71,29 @@ public class Player : MonoBehaviour
         _audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         if (_audioManager == null)
             Debug.LogError("AudioManager is null");
+        #endregion
+
+        #region UI related
+        #region Shield
+        _shield = gameObject.transform.Find("Shield").gameObject;
+        if(_shield == null)
+            Debug.LogError("Shield is null");
+
+        _shieldControl = _shield.GetComponent<Shield>();
+        if (_shieldControl == null)
+            Debug.LogError("ShieldControl is null");
+        #endregion
+
+        #region Damage
+        _damageLeft = gameObject.transform.Find("DamageLeft").gameObject;
+        if (_shield == null)
+            Debug.LogError("DamageLeft is null");
+
+        _damageRight = gameObject.transform.Find("DamageRight").gameObject;
+        if (_damageRight == null)
+            Debug.LogError("DamageRight is null");
+        #endregion
+        #endregion
     }
 
     // Update is called once per frame
@@ -143,8 +165,7 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive)
         {
-            _shield.SetActive(false);
-            _isShieldActive = false;
+            _isShieldActive =  _shieldControl.DamageShield();
         } else
         {
             --_lives;
@@ -174,7 +195,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag.Equals("EnemyLaser"))
         {

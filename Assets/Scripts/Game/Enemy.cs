@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour
     {
         while (!_isDestroyed)
         {
-            float secondsBeforeShoot = Random.Range(3f, 7f);
+            float secondsBeforeShoot = Random.Range(1f, 1f);
             yield return new WaitForSeconds(secondsBeforeShoot);
 
             if (!_isDestroyed)
