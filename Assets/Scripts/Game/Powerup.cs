@@ -7,6 +7,7 @@ public class Powerup : MonoBehaviour
     enum PowerupType
     {
         TripleShot,
+        MultiDirection,
         Shield,
         Speed,
         Ammo,
@@ -65,6 +66,9 @@ public class Powerup : MonoBehaviour
                         break;
                     case PowerupType.Live:
                         player.AddLives(1);
+                        break;
+                    case PowerupType.MultiDirection:
+                        player.MultiDirectionShotActive();
                         break;
                 }
             }

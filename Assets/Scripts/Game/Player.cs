@@ -50,10 +50,13 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Prefabs
+    private GameObject _currentProjectileType;
     [SerializeField]
-    private GameObject _laserPrefab;
+    private GameObject _baseLaserPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
+    [SerializeField]
+    private GameObject _multiDirectionShotPrefab;
     #endregion
 
     #region PowerUp Controls
@@ -67,6 +70,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+
+        _currentProjectileType = _baseLaserPrefab;
 
         #region Get Manager References
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
@@ -165,13 +170,10 @@ public class Player : MonoBehaviour
     private void Shoot()
     {
         _canFire = Time.time + _fireRate;
-        if (_isTripleShotActive)
-        {
-            Instantiate(_tripleShotPrefab, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
-        } else
-        {
-            Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y + 0.8f, 0), Quaternion.identity);
-        }
+
+        Debug.Log(_currentProjectileType);
+
+        Instantiate(_currentProjectileType, new Vector3(transform.position.x, transform.position.y + 0.8f, 0), Quaternion.identity);
 
         _audioManager.PlayLaserSound();
 
@@ -235,14 +237,14 @@ public class Player : MonoBehaviour
     #region Triple Shot
     public void TripleShotActive()
     {
-        _isTripleShotActive = true;
         StartCoroutine(TripleShotCoroutine());
     }
 
     private IEnumerator TripleShotCoroutine()
     {
+        _currentProjectileType = _tripleShotPrefab;
         yield return new WaitForSeconds(5);
-        _isTripleShotActive = false;
+        _currentProjectileType = _baseLaserPrefab;
     }
     #endregion
 
@@ -294,6 +296,20 @@ public class Player : MonoBehaviour
         _lives += lives;
 
         _uiManager.UpdateLives(_lives);
+    }
+    #endregion
+
+    #region Multidirection Shot
+    public void MultiDirectionShotActive()
+    {
+        StartCoroutine(MultiDirectionShotCoroutine());
+    }
+
+    private IEnumerator MultiDirectionShotCoroutine()
+    {
+        _currentProjectileType = _multiDirectionShotPrefab;
+        yield return new WaitForSeconds(5);
+        _currentProjectileType = _baseLaserPrefab;
     }
     #endregion
     #endregion
