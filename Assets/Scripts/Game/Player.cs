@@ -23,9 +23,12 @@ public class Player : MonoBehaviour
 
     #region UI related
     [SerializeField]
-    private int _lives = 3;
+    private int _maxLives = 3;
+    private int _lives;
+
     [SerializeField]
     private int _score = 0;
+
     private int _ammo;
 
     #region Damaged Engines
@@ -106,8 +109,10 @@ public class Player : MonoBehaviour
 
         #region Init Text Visuals
         _ammo = _maxAmmo;
+        _lives = _maxLives;
         _uiManager.UpdateScore(_score);
         _uiManager.UpdateAmmo(_ammo);
+        _uiManager.UpdateLives(_lives);
         #endregion
         #endregion
     }
@@ -263,18 +268,33 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    #region Ammo
     public void AddAmmo(int ammo)
     {
         if (ammo > _maxAmmo)
         {
-            ammo = _maxAmmo;
+            ammo = _maxAmmo - _ammo;
         }
-        _ammo = ammo;
+        _ammo += ammo;
     }
 
     public int GetMaxAmmo()
     {
         return _maxAmmo;
     }
+    #endregion
+
+    #region Live
+    public void AddLives(int lives)
+    {
+        if (lives > _maxLives)
+        {
+            lives = _maxLives - _lives;
+        }
+        _lives += lives;
+
+        _uiManager.UpdateLives(_lives);
+    }
+    #endregion
     #endregion
 }
