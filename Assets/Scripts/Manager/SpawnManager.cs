@@ -17,13 +17,28 @@ public class SpawnManager : MonoBehaviour
     private GameObject _powerupContainer;
     #endregion
 
+    #region Spawnrates
+    [SerializeField]
+    private float _spawnRateSpecialPowerups = 20;
+    #endregion
+
     #region Prefabs
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
     private GameObject[] _powerupPrefabs;
+    [SerializeField]
+    private GameObject[] _specialPowerupPrefabs;
     #endregion
     #endregion
+
+    void Start()
+    {
+        if (_spawnRateSpecialPowerups > 100)
+        {
+            _spawnRateSpecialPowerups = 100;
+        }
+    }
 
     public void StartSpawning()
     {
@@ -53,8 +68,18 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(spawnCooldown);
 
             var randomX = Random.Range(-8f, 8f);
-            var randomPowerupIndex = Random.Range(0, _powerupPrefabs.Length);
-            Instantiate(_powerupPrefabs[randomPowerupIndex], new Vector3(randomX, 7f, 0), Quaternion.identity, _powerupContainer.transform);
+
+            var spawnSpecial = Random.Range(0f, 100f) > _spawnRateSpecialPowerups;
+
+            var randomPowerupIndex = spawnSpecial ? Random.Range(0, _specialPowerupPrefabs.Length) : Random.Range(0, _powerupPrefabs.Length);
+
+            if (spawnSpecial)
+            {
+                Instantiate(_specialPowerupPrefabs[randomPowerupIndex], new Vector3(randomX, 7f, 0), Quaternion.identity, _powerupContainer.transform);
+            } else
+            {
+                Instantiate(_powerupPrefabs[randomPowerupIndex], new Vector3(randomX, 7f, 0), Quaternion.identity, _powerupContainer.transform);
+            }
         }
     }
 

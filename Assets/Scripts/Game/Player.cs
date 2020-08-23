@@ -171,8 +171,6 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
 
-        Debug.Log(_currentProjectileType);
-
         Instantiate(_currentProjectileType, new Vector3(transform.position.x, transform.position.y + 0.8f, 0), Quaternion.identity);
 
         _audioManager.PlayLaserSound();
