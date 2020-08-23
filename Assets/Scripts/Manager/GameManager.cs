@@ -5,15 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public bool IsAsteroidDestroyed { get; private set; }
+
     private bool _isGameOver = false;
 
-    // Start is called before the first frame update
+    #region Manager References
+    private SpawnManager _spawnManager;
+    #endregion
+
     void Start()
     {
-        
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        if (_spawnManager == null)
+            Debug.LogError("SpawnManager is null");
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_isGameOver && Input.GetKeyDown(KeyCode.R))
@@ -30,5 +36,15 @@ public class GameManager : MonoBehaviour
     public void OnPlayerDeath()
     {
         _isGameOver = true;
+    }
+
+    /// <summary>
+    /// Called when the asteroid is destroyed to
+    /// start the game.
+    /// </summary>
+    public void StartGame()
+    {
+        _spawnManager.StartSpawning();
+        IsAsteroidDestroyed = true;
     }
 }

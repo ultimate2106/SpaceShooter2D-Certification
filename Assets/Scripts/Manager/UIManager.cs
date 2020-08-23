@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region UI References
+    #region Text
     [SerializeField]
     private GameObject _gameOverText;
     [SerializeField]
@@ -20,21 +21,15 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _scoreText;
     [SerializeField]
+    private Text _ammoText;
+    #endregion
+
+    #region UI Elements
+    [SerializeField]
     private Image _livesDisplayImage;
     #endregion
     #endregion
-    // Start is called before the first frame update
-    void Start()
-    {
-        _scoreText.text = "Score: 0";
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    #endregion
     public void UpdateScore(int currentScore)
     {
         _scoreText.text = "Score: " + currentScore;
@@ -46,6 +41,11 @@ public class UIManager : MonoBehaviour
         {
             _livesDisplayImage.sprite = _livesSprites[currentLives];
         }
+    }
+
+    public void UpdateAmmo(int currentAmmo)
+    {
+        _ammoText.text = "Ammo: " + currentAmmo;
     }
 
     public void OnPlayerDeath()

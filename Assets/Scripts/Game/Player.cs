@@ -5,28 +5,37 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     #region Fields
+    #region Speed
     [SerializeField]
     private float _speed = 5;
     [SerializeField]
     private float _speedMultiplier = 2f;
+    #endregion
 
-
+    #region Shooting
     [SerializeField]
     private float _fireRate = 0.15f;
     [SerializeField]
     private float _canFire = -1f;
+    #endregion
 
     #region UI related
     [SerializeField]
     private int _lives = 3;
     [SerializeField]
     private int _score = 0;
+    [SerializeField]
+    private int _ammo = 15;
 
+    #region Damaged Engines
     private GameObject _damageLeft;
     private GameObject _damageRight;
+    #endregion
 
+    #region Shield
     private GameObject _shield;
     private Shield _shieldControl;
+    #endregion
     #endregion
 
     #region Manager References
@@ -74,7 +83,7 @@ public class Player : MonoBehaviour
         #endregion
 
         #region UI related
-        #region Shield
+        #region Shield References
         _shield = gameObject.transform.Find("Shield").gameObject;
         if(_shield == null)
             Debug.LogError("Shield is null");
@@ -84,7 +93,7 @@ public class Player : MonoBehaviour
             Debug.LogError("ShieldControl is null");
         #endregion
 
-        #region Damage
+        #region Damaged Engines References
         _damageLeft = gameObject.transform.Find("DamageLeft").gameObject;
         if (_shield == null)
             Debug.LogError("DamageLeft is null");
@@ -92,6 +101,11 @@ public class Player : MonoBehaviour
         _damageRight = gameObject.transform.Find("DamageRight").gameObject;
         if (_damageRight == null)
             Debug.LogError("DamageRight is null");
+        #endregion
+
+        #region Init Text Visuals
+        _uiManager.UpdateScore(_score);
+        _uiManager.UpdateAmmo(_ammo);
         #endregion
         #endregion
     }
@@ -101,7 +115,7 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammo > 0)
         {
             Shoot();
         }
@@ -153,6 +167,12 @@ public class Player : MonoBehaviour
         }
 
         _audioManager.PlayLaserSound();
+
+        if (_gameManager.IsAsteroidDestroyed)
+        {
+            --_ammo;
+            _uiManager.UpdateAmmo(_ammo);
+        }
     }
 
     public void AddScore(int pointsToAdd)

@@ -8,9 +8,10 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float _speed = 4;
 
-    private Player _player;
-
-    private Animator _animator;
+    [SerializeField]
+    private float _minFirerate = 3.0f;
+    [SerializeField]
+    private float _maxFirerate = 7.0f;
 
     private bool _isDestroyed = false;
 
@@ -19,15 +20,20 @@ public class Enemy : MonoBehaviour
     private GameObject _laserPrefab;
     #endregion
 
+    #region References
+    private Player _player;
+    private Animator _animator;
+
     #region Manager References
     private AudioManager _audioManager;
     #endregion
-
+    #endregion
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        #region Get References
         _player = GameObject.FindWithTag("Player").transform.GetComponent<Player>();
         if (_player == null)
             Debug.LogError("Player is null");
@@ -39,6 +45,7 @@ public class Enemy : MonoBehaviour
         _animator = GetComponent<Animator>();
         if (_animator == null)
             Debug.LogError("Enemy Animator is null");
+        #endregion
 
         StartCoroutine(RandomShootCoroutine());
     }
@@ -64,7 +71,7 @@ public class Enemy : MonoBehaviour
     {
         while (!_isDestroyed)
         {
-            float secondsBeforeShoot = Random.Range(1f, 1f);
+            float secondsBeforeShoot = Random.Range(_minFirerate, _maxFirerate);
             yield return new WaitForSeconds(secondsBeforeShoot);
 
             if (!_isDestroyed)
@@ -103,8 +110,7 @@ public class Enemy : MonoBehaviour
 
         _animator.SetTrigger("OnEnemyDestroy");
 
-        if (!_isDestroyed)
-            _audioManager.PlayExplosionSound();
+        Destroy(GetComponent<BoxCollider2D>());
 
         _speed = 0;
     }
