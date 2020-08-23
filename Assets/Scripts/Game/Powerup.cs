@@ -8,7 +8,8 @@ public class Powerup : MonoBehaviour
     {
         TripleShot,
         Shield,
-        Speed
+        Speed,
+        Ammo
     }
 
     #region Fields
@@ -57,6 +58,9 @@ public class Powerup : MonoBehaviour
                         break;
                     case PowerupType.Shield:
                         player.ShieldActive();
+                        break;
+                    case PowerupType.Ammo:
+                        player.AddAmmo(player.GetMaxAmmo());
                         break;
                 }
             }

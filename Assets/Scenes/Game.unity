@@ -1364,9 +1364,9 @@ MonoBehaviour:
   _speedMultiplier: 2
   _fireRate: 0.15
   _canFire: -1
+  _maxAmmo: 15
   _lives: 3
   _score: 0
-  _ammo: 15
   _laserPrefab: {fileID: 7957400997796794662, guid: 7cdfd831edd1b0e46956698a9d1bf05f,
     type: 3}
   _tripleShotPrefab: {fileID: 3598729878656830052, guid: 9ebaf81091195e0418434b1ff44c34e2,
@@ -2469,3 +2469,4 @@ MonoBehaviour:
   - {fileID: 8911552023808591607, guid: b33cac17a1b6cfc4390041b4417f0609, type: 3}
   - {fileID: 7100015358362864648, guid: 8d6ff22d84c8b6848a0a82217b478f4d, type: 3}
   - {fileID: 5140086540319262580, guid: 623b02d909d650149b8d078af10a2996, type: 3}
+  - {fileID: 1405994095024041982, guid: be5c7e598feabf84f99ea965e8abfae1, type: 3}

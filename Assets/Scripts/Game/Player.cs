@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.15f;
     [SerializeField]
     private float _canFire = -1f;
+    [SerializeField]
+    private int _maxAmmo = 15;
     #endregion
 
     #region UI related
@@ -24,8 +26,7 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     [SerializeField]
     private int _score = 0;
-    [SerializeField]
-    private int _ammo = 15;
+    private int _ammo;
 
     #region Damaged Engines
     private GameObject _damageLeft;
@@ -104,6 +105,7 @@ public class Player : MonoBehaviour
         #endregion
 
         #region Init Text Visuals
+        _ammo = _maxAmmo;
         _uiManager.UpdateScore(_score);
         _uiManager.UpdateAmmo(_ammo);
         #endregion
@@ -260,5 +262,19 @@ public class Player : MonoBehaviour
         _isShieldActive = true;
     }
     #endregion
+
+    public void AddAmmo(int ammo)
+    {
+        if (ammo > _maxAmmo)
+        {
+            ammo = _maxAmmo;
+        }
+        _ammo = ammo;
+    }
+
+    public int GetMaxAmmo()
+    {
+        return _maxAmmo;
+    }
     #endregion
 }
