@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     private Text _scoreText;
     [SerializeField]
     private Text _ammoText;
+    [SerializeField]
+    private Text _thrusterCharge;
     #endregion
 
     #region UI Elements
@@ -30,6 +32,7 @@ public class UIManager : MonoBehaviour
     #endregion
     #endregion
     #endregion
+
     public void UpdateScore(int currentScore)
     {
         _scoreText.text = "Score: " + currentScore;
@@ -46,6 +49,11 @@ public class UIManager : MonoBehaviour
     public void UpdateAmmo(int currentAmmo)
     {
         _ammoText.text = "Ammo: " + currentAmmo;
+    }
+
+    public void UpdateThrusterCharge(int currentThrusterCharge)
+    {
+        _thrusterCharge.text = "Thrusters: " + currentThrusterCharge;
     }
 
     public void OnPlayerDeath()

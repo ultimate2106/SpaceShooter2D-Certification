@@ -1078,6 +1078,7 @@ RectTransform:
   - {fileID: 1728637799}
   - {fileID: 1910667075}
   - {fileID: 1398823666}
+  - {fileID: 1669784574}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1360,13 +1361,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b43830ecf11d4d4a8b67c6439b4c5d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
+  _normalSpeed: 5
   _speedMultiplier: 2
   _fireRate: 0.15
   _canFire: -1
   _maxAmmo: 15
   _maxLives: 3
   _score: 0
+  _thrustersMaxOverload: 10
+  _chargeRate: 0.5
   _baseLaserPrefab: {fileID: 7957400997796794662, guid: 3a1f84b666e24f54d9859ccd1b46412e,
     type: 3}
   _tripleShotPrefab: {fileID: 3598729878656830052, guid: ce7e4a54ad73ed240b74f8951d4b0b9b,
@@ -1887,6 +1890,84 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1669784573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1669784574}
+  - component: {fileID: 1669784576}
+  - component: {fileID: 1669784575}
+  m_Layer: 5
+  m_Name: ThrustersText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1669784574
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669784573}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 830238901}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -320.22, y: -208.1}
+  m_SizeDelta: {x: 149.57578, y: 24.398933}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1669784575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669784573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 3
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Thrusters: 0'
+--- !u!222 &1669784576
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669784573}
+  m_CullTransparentMesh: 0
 --- !u!1 &1728637798
 GameObject:
   m_ObjectHideFlags: 0
@@ -2017,6 +2098,7 @@ MonoBehaviour:
   _restartText: {fileID: 1910667074}
   _scoreText: {fileID: 1598661630}
   _ammoText: {fileID: 1398823667}
+  _thrusterCharge: {fileID: 1669784575}
   _livesDisplayImage: {fileID: 1484340911}
 --- !u!1 &1789122447
 GameObject:
@@ -2465,6 +2547,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyContainer: {fileID: 1789122447}
   _powerupContainer: {fileID: 2018954886}
+  _spawnRateSpecialPowerups: 20
   _enemyPrefab: {fileID: 2518193468535905174, guid: f9d810c7021d8c44e8da520f82d989ff,
     type: 3}
   _powerupPrefabs:

@@ -7,9 +7,12 @@ public class Player : MonoBehaviour
     #region Fields
     #region Speed
     [SerializeField]
-    private float _speed = 5;
+    private float _normalSpeed = 5f;
+    private float _speedWithPowerup = 10f;
+    private float _currentSpeed = 5f;
     [SerializeField]
     private float _speedMultiplier = 2f;
+    private bool _isSpeedActive = false;
     #endregion
 
     #region Shooting
@@ -30,6 +33,15 @@ public class Player : MonoBehaviour
     private int _score = 0;
 
     private int _ammo;
+
+    #region Thrusters
+    [SerializeField]
+    private int _thrustersMaxOverload = 10;
+    private int _currentThrustersOverload = 0;
+    private float _chargeThruster = -1f;
+    [SerializeField]
+    private float _chargeRate = 0.2f;
+    #endregion
 
     #region Damaged Engines
     private GameObject _damageLeft;
@@ -134,10 +146,53 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            _speed *= _speedMultiplier;
+            if (_isSpeedUpActive)
+            {
+                _currentSpeed = _speedWithPowerup * _speedMultiplier;
+            } else
+            {
+                _currentSpeed = _normalSpeed * _speedMultiplier;
+            }
+
+            _isSpeedActive = true;
         } else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            _speed /= _speedMultiplier;
+            if (_isSpeedUpActive)
+            {
+                _currentSpeed = _speedWithPowerup / _speedMultiplier;
+            } else
+            {
+                _currentSpeed = _normalSpeed;
+            }
+
+            _isSpeedActive = false;
+        }
+
+        if (_isSpeedActive && Time.time > _chargeThruster)
+        {
+            if (_currentThrustersOverload < _thrustersMaxOverload)
+            {
+                _chargeThruster = Time.time + _chargeRate;
+                ++_currentThrustersOverload;
+                _uiManager.UpdateThrusterCharge(_currentThrustersOverload);
+            } else
+            {
+                _isSpeedActive = false;
+            }
+        } else if(!_isSpeedActive && _currentThrustersOverload > 0 && Time.time > _chargeThruster)
+        {
+            if (_isSpeedUpActive)
+            {
+                _currentSpeed = _speedWithPowerup / _speedMultiplier;
+            }
+            else
+            {
+                _currentSpeed = _normalSpeed;
+            }
+
+            _chargeThruster = Time.time + _chargeRate;
+            --_currentThrustersOverload;
+            _uiManager.UpdateThrusterCharge(_currentThrustersOverload);
         }
     }
 
@@ -149,10 +204,10 @@ public class Player : MonoBehaviour
         var direction = new Vector3(horizontalInput, verticalInput, 0);
         if (_isSpeedUpActive)
         {
-            transform.Translate(direction * (_speed * _speedMultiplier) * Time.deltaTime);
+            transform.Translate(direction * (_currentSpeed * _speedMultiplier) * Time.deltaTime);
         } else
         {
-            transform.Translate(direction * _speed * Time.deltaTime);
+            transform.Translate(direction * _currentSpeed * Time.deltaTime);
         }
 
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.8f, 0), 0);
