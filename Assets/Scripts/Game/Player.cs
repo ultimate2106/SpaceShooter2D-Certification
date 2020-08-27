@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -54,11 +53,15 @@ public class Player : MonoBehaviour
     #endregion
     #endregion
 
+    #region References
+    private CameraManager _cam;
+
     #region Manager References
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
     private AudioManager _audioManager;
+    #endregion
     #endregion
 
     #region Prefabs
@@ -84,6 +87,15 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, 0, 0);
 
         _currentProjectileType = _baseLaserPrefab;
+
+        #region Camera Script Reference
+        _cam = GameObject.Find("Main Camera").GetComponent<CameraManager>();
+
+        if (_cam == null)
+        {
+            Debug.Log("Camera is null");
+        }
+        #endregion
 
         #region Get Manager References
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
@@ -144,6 +156,7 @@ public class Player : MonoBehaviour
             Shoot();
         }
 
+        #region Thrusters (LeftShift for Speedup)
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             if (_isSpeedUpActive)
@@ -167,7 +180,9 @@ public class Player : MonoBehaviour
 
             _isSpeedActive = false;
         }
+        #endregion
 
+        #region Thruster CD System
         if (_isSpeedActive && Time.time > _chargeThruster)
         {
             if (_currentThrustersOverload < _thrustersMaxOverload)
@@ -194,6 +209,7 @@ public class Player : MonoBehaviour
             --_currentThrustersOverload;
             _uiManager.UpdateThrusterCharge(_currentThrustersOverload);
         }
+        #endregion
     }
 
     private void CalculateMovement()
@@ -216,7 +232,7 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(-11.3f, transform.position.y, 0);
         }
-        else if (transform.position.y <= -11.3f)
+        else if (transform.position.x <= -11.3f)
         {
             transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
@@ -245,6 +261,8 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+        _cam.ShakeCamera();
+
         if (_isShieldActive)
         {
             _isShieldActive =  _shieldControl.DamageShield();
